@@ -1,0 +1,35 @@
+import requests
+
+# Set API key
+api_key = "your_api_key_here"
+
+# Set API endpoint for retrieving task details
+task_id = "task_id_here"
+endpoint = f"https://api.clickup.com/api/v2/task/{task_id}"
+
+# Set headers for authentication
+headers = {
+    "Authorization": f"Token {api_key}"
+}
+
+# Send a GET request to retrieve the task details
+response = requests.get(endpoint, headers=headers)
+
+# Check if the request was successful
+if response.status_code == 200:
+    task = response.json()
+    print("Task details:", task)
+    
+    # Update the task description
+    task["content"] = "New task description"
+    
+    # Send a PATCH request to update the task
+    update_response = requests.patch(endpoint, headers=headers, json=task)
+    
+    # Check if the update was successful
+    if update_response.status_code == 200:
+        print("Task updated successfully")
+    else:
+        print("Failed to update task")
+else:
+    print("Failed to retrieve task details")
